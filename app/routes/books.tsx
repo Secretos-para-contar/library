@@ -70,7 +70,7 @@ export default function Books() {
           >
             {filteredBooks.map((book, index) => (
               <motion.div
-                key={book.id}
+                key={book.id.toString() + index}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{

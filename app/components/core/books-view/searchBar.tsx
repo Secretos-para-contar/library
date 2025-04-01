@@ -33,9 +33,12 @@ export function SearchBar({ results }: SearchBarProps) {
     "grid grid-cols-2" | "flex flex-col"
   >(useBooksLayoutStore.getState().display)
 
+  const { orderBy, searchFilters } = useBookStore()
+
   useEffect(() => {
     useBooksLayoutStore.setState({ display: viewMode })
-  }, [viewMode])
+    orderBy(searchFilters.order.toUpperCase())
+  }, [viewMode, orderBy, searchFilters.order])
 
   return (
     <div className="container mx-auto py-8 -z-[]">
@@ -53,7 +56,20 @@ export function SearchBar({ results }: SearchBarProps) {
             />
           </div>
           <div className="flex gap-2">
-            <Select defaultValue="relevance">
+            <Select
+              defaultValue={searchFilters.order.toLowerCase()}
+              onValueChange={(value) => {
+                orderBy(value.toUpperCase())
+                useBookStore.setState((state) => {
+                  return {
+                    searchFilters: {
+                      ...state.searchFilters,
+                      order: value,
+                    },
+                  }
+                })
+              }}
+            >
               <SelectTrigger className="w-[180px] bg-white">
                 <SelectValue placeholder="Ordenar por" />
               </SelectTrigger>
@@ -61,6 +77,7 @@ export function SearchBar({ results }: SearchBarProps) {
                 <SelectItem value="relevance">Relevancia</SelectItem>
                 <SelectItem value="newest">Más recientes</SelectItem>
                 <SelectItem value="oldest">Más antiguos</SelectItem>
+
                 <SelectItem value="a-z">A-Z</SelectItem>
                 <SelectItem value="z-a">Z-A</SelectItem>
               </SelectContent>
