@@ -22,13 +22,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: "npm"
+          cache: 'pnpm'
+
+      - name: 📦 Instalando pnpm
+        run: npm install -g pnpm
 
       - name: 📦 Instalando dependencias
-        run: npm install
+        run: pnpm install
 
       - name: 🔍 Revisando errores con ESLint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: 🏗️ Construir la aplicación Remix
-        run: npm run build
+        run: pnpm run build
