@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "@remix-run/react"
 import { Bookmark, ChevronLeft, Heart, Share2, X } from "lucide-react"
 import { motion } from "framer-motion"
@@ -124,6 +124,11 @@ export function BookNavBarView({ bookTitle, bookAuthor }: BookNavBarProps) {
   const [bookmarked, setBookmarked] = useState(false)
   const [searchVisible, setSearchVisible] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  const [isUserAuth, setIsUserAuth] = useState(false)
+
+  useEffect(() => {
+    setIsUserAuth(isAauthenticated)
+  }, [])
 
   return (
     <header className="bg-card border-b sticky top-0 z-10">
@@ -151,16 +156,16 @@ export function BookNavBarView({ bookTitle, bookAuthor }: BookNavBarProps) {
           <LikeButton
             liked={liked}
             onClick={() => setLiked(!liked)}
-            disabled={!isAauthenticated}
+            disabled={!isUserAuth}
           />
           <BookmarkButton
             bookmarked={bookmarked}
             onClick={() => setBookmarked(!bookmarked)}
-            disabled={!isAauthenticated}
+            disabled={!isUserAuth}
           />
           <ShareDropdown isOpen={showShare} setIsOpen={setShowShare} />
 
-          <div className={`${isAauthenticated ? "mr-[-30px]" : ""}`}>
+          <div className={`${isUserAuth ? "mr-[-30px]" : ""}`}>
             <UserMenu />
           </div>
         </div>

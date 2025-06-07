@@ -10,15 +10,24 @@ import {
 } from "~/components/ui/navigation-menu"
 
 import UserMenu from "./UserMenu"
+import { useEffect, useState } from "react"
 
 export function SiteHeader() {
+  const [render, setRender] = useState(false)
+
+  useEffect(() => {
+    setRender(true)
+  }, [])
+
+  if (!render) return null
+
   return (
     <header>
       <div className="bg-[#5F8DB5] h-7"></div>
 
       <nav className="bg-[#003865] h-20 flex justify-between items-center">
         <div className="flex items-center justify-between h-full px-4">
-          <Link to={"/"} className="text-white">
+          <Link to="/" className="text-white">
             <img
               src="/20-blanco.png"
               alt="logo de secretos para contar"
@@ -37,24 +46,24 @@ export function SiteHeader() {
                 <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
                     <NavigationMenuLink asChild>
-                      <Link to={"/books"} className="h-full">
+                      <Link to="/books" className="h-full">
                         Books
                       </Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to={"/books"}>Books</Link>
+                      <Link to="/books">Books</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to={"/books"}>Books</Link>
+                      <Link to="/books">Books</Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link to={"/books"}>Books</Link>
+                      <Link to="/books">Books</Link>
                     </NavigationMenuLink>
                   </li>
                 </ul>
@@ -62,11 +71,11 @@ export function SiteHeader() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link to={"/books"}>
-                <NavigationMenuLink className="bg-transparent">
-                  Documentacion
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink asChild>
+                <Link to="/books" className="bg-transparent">
+                  Documentación
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
