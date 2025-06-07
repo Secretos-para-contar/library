@@ -25,9 +25,9 @@ jobs:
           cache: 'pnpm'
 
       - name: 📦 Instalando pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4.1.0
         with:
-          version: 8 # o la versión específica que uses
+          version: 10 # o la versión específica que uses
 
       - name: 📦 Instalando dependencias
         run: pnpm install
