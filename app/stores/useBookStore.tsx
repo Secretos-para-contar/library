@@ -4,6 +4,12 @@ import { persist, createJSONStorage } from "zustand/middleware"
 // eslint-disable-next-line import/no-unresolved
 import { IBook } from "~/interfaces/Book"
 
+// Helper function to normalize rating to number for sorting
+const normalizeRating = (rating?: string | number): number => {
+  if (rating === undefined) return 0
+  return typeof rating === 'string' ? parseFloat(rating) : rating
+}
+
 interface SearchFilters {
   searchTerm: string
   order: "A-Z" | "Z-A" | "relevance" | string
@@ -54,31 +60,29 @@ export const useBookStore = create<BooksResponse>()(
         set({ status })
       },
       orderBy: (order: string) => {
-        // Ordenar los librso por el criterio seleccionado
+        // Ordenar los libros por el criterio seleccionado
         const books = useBookStore.getState().books
 
         if (order === "A-Z") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            if (a.title > b.title) return 1
-            if (a.title < b.title) return -1
-            return 0
-          })
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => 
+            a.title.localeCompare(b.title)
+          )
           set({ books: booksSorted })
+          return
         }
 
         if (order === "Z-A") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            if (a.title < b.title) return 1
-            if (a.title > b.title) return -1
-            return 0
-          })
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => 
+            b.title.localeCompare(a.title)
+          )
           set({ books: booksSorted })
+          return
         }
 
-        if (order == "RELEVANCE") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            return a.rating! > b.rating! ? 1 : -1
-          })
+        if (order === "RELEVANCE") {
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => 
+            normalizeRating(b.rating) - normalizeRating(a.rating)
+          )
           set({ books: booksSorted })
         }
       },

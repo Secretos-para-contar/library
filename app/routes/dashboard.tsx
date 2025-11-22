@@ -85,6 +85,17 @@ const categoryData = [
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"]
 
+// Pre-calculate totals since monthlyData is constant
+const totalDescargas = monthlyData.reduce(
+  (sum, item) => sum + item.descargas,
+  0
+)
+const totalPDFs = monthlyData.reduce((sum, item) => sum + item.pdfs, 0)
+const totalAudiolibros = monthlyData.reduce(
+  (sum, item) => sum + item.audiolibros,
+  0
+)
+
 const recentActivity = [
   {
     id: 1,
@@ -140,17 +151,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AdminDashboard() {
   const [timeRange, setTimeRange] = useState("7d")
 
-  // Calcular totales
-  const totalDescargas = monthlyData.reduce(
-    (sum, item) => sum + item.descargas,
-    0
-  )
-  const totalPDFs = monthlyData.reduce((sum, item) => sum + item.pdfs, 0)
-  const totalAudiolibros = monthlyData.reduce(
-    (sum, item) => sum + item.audiolibros,
-    0
-  )
-
   // Calcular cambios porcentuales (simulados)
   const cambioDescargas = 12.5
   const cambioPDFs = -5.2
@@ -170,8 +170,6 @@ export default function AdminDashboard() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   }
-
-  console.log("Dashboard logged in")
 
   return (
     <>

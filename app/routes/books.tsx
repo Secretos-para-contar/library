@@ -15,7 +15,7 @@ import { useBookStore } from "~/stores/useBookStore"
 import { useBooksLayoutStore } from "~/stores/useBooksLayout"
 
 // React
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
 // Framer Motion
 import { motion, AnimatePresence } from "framer-motion"
@@ -25,6 +25,10 @@ export const loader: LoaderFunction = async () => {
   const books: IBook[] = await getBooks()
   return books
 }
+
+// Animation configuration
+const ANIMATION_DELAY_STEP = 0.05 // Delay increment per item
+const MAX_ANIMATION_DELAY = 0.5 // Maximum total delay in seconds
 
 const FramerMotionAnimationVariables = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
@@ -51,9 +55,11 @@ export default function Books() {
     setBooks(booksLoaderData as IBook[])
   }, [booksLoaderData, setBooks])
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchFilters.searchTerm.toLowerCase())
-  )
+  const filteredBooks = useMemo(() => {
+    return books.filter((book) =>
+      book.title.toLowerCase().includes(searchFilters.searchTerm.toLowerCase())
+    )
+  }, [books, searchFilters.searchTerm])
 
   return (
     <AppLayout>
@@ -76,7 +82,7 @@ export default function Books() {
                 transition={{
                   duration: 0.4,
                   ease: "easeOut",
-                  delay: index * 0.35, // Retrasa cada elemento progresivamente
+                  delay: Math.min(index * ANIMATION_DELAY_STEP, MAX_ANIMATION_DELAY),
                 }}
               >
                 <BookCardV2
