@@ -56,6 +56,12 @@ export const useBookStore = create<BooksResponse>()(
       orderBy: (order: string) => {
         // Ordenar los libros por el criterio seleccionado
         const books = useBookStore.getState().books
+        
+        // Helper function to normalize rating to number
+        const normalizeRating = (rating?: string | number): number => {
+          if (rating === undefined) return 0
+          return typeof rating === 'string' ? parseFloat(rating) : rating
+        }
 
         if (order === "A-Z") {
           const booksSorted = [...books].sort((a: IBook, b: IBook) => {
@@ -73,9 +79,7 @@ export const useBookStore = create<BooksResponse>()(
 
         if (order === "RELEVANCE") {
           const booksSorted = [...books].sort((a: IBook, b: IBook) => {
-            const ratingA = typeof a.rating === 'string' ? parseFloat(a.rating) : (a.rating ?? 0)
-            const ratingB = typeof b.rating === 'string' ? parseFloat(b.rating) : (b.rating ?? 0)
-            return ratingB - ratingA
+            return normalizeRating(b.rating) - normalizeRating(a.rating)
           })
           set({ books: booksSorted })
         }

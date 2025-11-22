@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import {
   Download,
@@ -85,6 +85,17 @@ const categoryData = [
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"]
 
+// Pre-calculate totals since monthlyData is constant
+const totalDescargas = monthlyData.reduce(
+  (sum, item) => sum + item.descargas,
+  0
+)
+const totalPDFs = monthlyData.reduce((sum, item) => sum + item.pdfs, 0)
+const totalAudiolibros = monthlyData.reduce(
+  (sum, item) => sum + item.audiolibros,
+  0
+)
+
 const recentActivity = [
   {
     id: 1,
@@ -139,20 +150,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdminDashboard() {
   const [timeRange, setTimeRange] = useState("7d")
-
-  // Calcular totales con memoization
-  const totalDescargas = useMemo(
-    () => monthlyData.reduce((sum, item) => sum + item.descargas, 0),
-    []
-  )
-  const totalPDFs = useMemo(
-    () => monthlyData.reduce((sum, item) => sum + item.pdfs, 0),
-    []
-  )
-  const totalAudiolibros = useMemo(
-    () => monthlyData.reduce((sum, item) => sum + item.audiolibros, 0),
-    []
-  )
 
   // Calcular cambios porcentuales (simulados)
   const cambioDescargas = 12.5

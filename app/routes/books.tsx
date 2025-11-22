@@ -78,7 +78,7 @@ export default function Books() {
                 transition={{
                   duration: 0.4,
                   ease: "easeOut",
-                  delay: Math.min(index * 0.1, 2), // Cap delay at 2 seconds max
+                  delay: Math.min(index * 0.05, 0.5), // Cap delay at 0.5 seconds for better UX
                 }}
               >
                 <BookCardV2
