@@ -26,6 +26,10 @@ export const loader: LoaderFunction = async () => {
   return books
 }
 
+// Animation configuration
+const ANIMATION_DELAY_STEP = 0.05 // Delay increment per item
+const MAX_ANIMATION_DELAY = 0.5 // Maximum total delay in seconds
+
 const FramerMotionAnimationVariables = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
   visible: {
@@ -78,7 +82,7 @@ export default function Books() {
                 transition={{
                   duration: 0.4,
                   ease: "easeOut",
-                  delay: Math.min(index * 0.05, 0.5), // Cap delay at 0.5 seconds for better UX
+                  delay: Math.min(index * ANIMATION_DELAY_STEP, MAX_ANIMATION_DELAY),
                 }}
               >
                 <BookCardV2

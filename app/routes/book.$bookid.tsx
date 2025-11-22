@@ -29,6 +29,10 @@ const pageVariants = {
   exit: { opacity: 0, transition: { duration: 0.3 } },
 }
 
+// Animation configuration for recommended books
+const RECOMMENDED_ANIMATION_DELAY_STEP = 0.1
+const RECOMMENDED_MAX_ANIMATION_DELAY = 0.4
+
 const recommendedBooks = [
   {
     id: "2",
@@ -256,7 +260,7 @@ export default function Book() {
                     transition={{
                       duration: 0.4,
                       ease: "easeOut",
-                      delay: Math.min(index * 0.1, 0.4), // Cap delay to prevent long waits
+                      delay: Math.min(index * RECOMMENDED_ANIMATION_DELAY_STEP, RECOMMENDED_MAX_ANIMATION_DELAY),
                     }}
                   >
                     <Card className="overflow-hidden h-[520px] border-slate-200 hover:shadow-md transition-shadow">
