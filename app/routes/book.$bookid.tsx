@@ -256,7 +256,7 @@ export default function Book() {
                     transition={{
                       duration: 0.4,
                       ease: "easeOut",
-                      delay: index * 0.35,
+                      delay: Math.min(index * 0.1, 0.4), // Cap delay to prevent long waits
                     }}
                   >
                     <Card className="overflow-hidden h-[520px] border-slate-200 hover:shadow-md transition-shadow">

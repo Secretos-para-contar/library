@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { motion } from "framer-motion"
 import {
   Download,
@@ -140,15 +140,18 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AdminDashboard() {
   const [timeRange, setTimeRange] = useState("7d")
 
-  // Calcular totales
-  const totalDescargas = monthlyData.reduce(
-    (sum, item) => sum + item.descargas,
-    0
+  // Calcular totales con memoization
+  const totalDescargas = useMemo(
+    () => monthlyData.reduce((sum, item) => sum + item.descargas, 0),
+    []
   )
-  const totalPDFs = monthlyData.reduce((sum, item) => sum + item.pdfs, 0)
-  const totalAudiolibros = monthlyData.reduce(
-    (sum, item) => sum + item.audiolibros,
-    0
+  const totalPDFs = useMemo(
+    () => monthlyData.reduce((sum, item) => sum + item.pdfs, 0),
+    []
+  )
+  const totalAudiolibros = useMemo(
+    () => monthlyData.reduce((sum, item) => sum + item.audiolibros, 0),
+    []
   )
 
   // Calcular cambios porcentuales (simulados)
@@ -170,8 +173,6 @@ export default function AdminDashboard() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   }
-
-  console.log("Dashboard logged in")
 
   return (
     <>

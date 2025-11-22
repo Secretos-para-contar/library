@@ -54,30 +54,28 @@ export const useBookStore = create<BooksResponse>()(
         set({ status })
       },
       orderBy: (order: string) => {
-        // Ordenar los librso por el criterio seleccionado
+        // Ordenar los libros por el criterio seleccionado
         const books = useBookStore.getState().books
 
         if (order === "A-Z") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            if (a.title > b.title) return 1
-            if (a.title < b.title) return -1
-            return 0
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => {
+            return a.title.localeCompare(b.title)
           })
           set({ books: booksSorted })
         }
 
         if (order === "Z-A") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            if (a.title < b.title) return 1
-            if (a.title > b.title) return -1
-            return 0
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => {
+            return b.title.localeCompare(a.title)
           })
           set({ books: booksSorted })
         }
 
-        if (order == "RELEVANCE") {
-          const booksSorted = books.sort((a: IBook, b: IBook) => {
-            return a.rating! > b.rating! ? 1 : -1
+        if (order === "RELEVANCE") {
+          const booksSorted = [...books].sort((a: IBook, b: IBook) => {
+            const ratingA = typeof a.rating === 'string' ? parseFloat(a.rating) : (a.rating ?? 0)
+            const ratingB = typeof b.rating === 'string' ? parseFloat(b.rating) : (b.rating ?? 0)
+            return ratingB - ratingA
           })
           set({ books: booksSorted })
         }

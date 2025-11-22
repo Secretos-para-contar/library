@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Search, Filter, Grid3X3, List } from "lucide-react"
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
@@ -35,10 +35,15 @@ export function SearchBar({ results }: SearchBarProps) {
 
   const [render, setRender] = useState(false)
   const { orderBy, searchFilters } = useBookStore()
+  const prevOrderRef = useRef(searchFilters.order)
 
   useEffect(() => {
     useBooksLayoutStore.setState({ display: viewMode })
-    orderBy(searchFilters.order.toUpperCase())
+    // Only call orderBy if the order has actually changed
+    if (prevOrderRef.current !== searchFilters.order) {
+      orderBy(searchFilters.order.toUpperCase())
+      prevOrderRef.current = searchFilters.order
+    }
   }, [viewMode, orderBy, searchFilters.order])
 
   useEffect(() => {

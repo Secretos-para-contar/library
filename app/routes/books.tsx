@@ -15,7 +15,7 @@ import { useBookStore } from "~/stores/useBookStore"
 import { useBooksLayoutStore } from "~/stores/useBooksLayout"
 
 // React
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
 // Framer Motion
 import { motion, AnimatePresence } from "framer-motion"
@@ -51,9 +51,11 @@ export default function Books() {
     setBooks(booksLoaderData as IBook[])
   }, [booksLoaderData, setBooks])
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchFilters.searchTerm.toLowerCase())
-  )
+  const filteredBooks = useMemo(() => {
+    return books.filter((book) =>
+      book.title.toLowerCase().includes(searchFilters.searchTerm.toLowerCase())
+    )
+  }, [books, searchFilters.searchTerm])
 
   return (
     <AppLayout>
@@ -76,7 +78,7 @@ export default function Books() {
                 transition={{
                   duration: 0.4,
                   ease: "easeOut",
-                  delay: index * 0.35, // Retrasa cada elemento progresivamente
+                  delay: Math.min(index * 0.1, 2), // Cap delay at 2 seconds max
                 }}
               >
                 <BookCardV2
